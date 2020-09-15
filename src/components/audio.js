@@ -1,12 +1,16 @@
-const audio = (frequency, playing) => {
-    console.log('titi')
+const audio = (osc, status) => {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc1 = audioCtx.createOscillator();
     osc1.start();
-    osc1.frequency.value = frequency
-
-    if (playing) osc1.connect(audioCtx.destination)
-    else osc1.disconnect(audioCtx.destination)
+    if (status === 'play') {
+        osc1.connect(audioCtx.destination);
+        console.log('connected');
+    } else if (status === 'stop') {
+        osc1.disconnect(audioCtx.destination);
+        console.log('disconnected');
+    } else {
+        return;
+    }
 }
 
 export default audio;
