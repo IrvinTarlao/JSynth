@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Keys from './Keys';
+import React from 'react';
+import Key from './Key';
 import './key.css';
-// import audio from './audio';
 
 const keysList = [
     { note: 'F', keyboard: 'f', color: 'white', frequency: 349.23 },
@@ -19,38 +18,22 @@ const keysList = [
 ]
 
 const KeysFrame = () => {
-    const [pressedKeys, setPressedKeys] = useState([]);
-    const ALLOWED_KEYS = ['f', 'g', 'h', 'j', 'k', 'l', 'm', 't', 'y', 'u', 'o', 'p'];
-
-    useEffect(() => {
-        const onKeyDown = ({ key }) => {
-            if (ALLOWED_KEYS.includes(key) && !pressedKeys.includes(key)) {
-                setPressedKeys(previousPressedKeys => [...previousPressedKeys, key]);
-            }
-        }
-
-        const onKeyUp = ({ key }) => {
-            if (ALLOWED_KEYS.includes(key)) {
-                setPressedKeys(previousPressedKeys => previousPressedKeys.filter(k => k !== key));
-            }
-        }
-
-        document.addEventListener('keydown', onKeyDown);
-        document.addEventListener('keyup', onKeyUp)
-
-        return () => {
-            document.removeEventListener('keydown', onKeyDown);
-            document.removeEventListener('keyup', onKeyUp);
-        }
-    });
 
     return (
         <div style={{ width: '70%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#171419', padding: '5px', color: 'white' }}>
             <div style={{ width: '100%', height: '25%', marginBottom: '5px' }}>
-                <Keys keys={keysList.filter(key => key.color === 'black')} pressedKeys={pressedKeys} color={'black'} />
+                <div style={{ width: '100%', height: '100%', display: 'flex' }}>
+                    {keysList.filter(key => key.color === 'black').map(key =>
+                        <Key key={key.note} playKey={key} color={'black'} />
+                    )}
+                </div>
             </div>
             <div style={{ width: '100%', height: '75%', display: 'flex', justifyContent: 'space-between' }}>
-                <Keys keys={keysList.filter(key => key.color === 'white')} pressedKeys={pressedKeys} color={'white'} />
+                <div style={{ width: '100%', height: '100%', display: 'flex' }}>
+                    {keysList.filter(key => key.color === 'white').map(key =>
+                        <Key key={key.note} playKey={key} color={'white'} />
+                    )}
+                </div>
             </div>
         </div>
     )
